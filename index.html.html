@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer con Punti e Logo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #time {
+            font-size: 48px;
+            margin: 20px;
+        }
+        button {
+            font-size: 20px;
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        input {
+            font-size: 20px;
+            width: 120px;
+            text-align: center;
+        }
+        #punti {
+            font-size: 24px;
+            color: green;
+            margin-top: 20px;
+        }
+        #logo {
+            margin-top: 30px;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Timer con Punti</h1>
+    <input type="number" id="inputSeconds" placeholder="Secondi" min="1">
+    <button id="setBtn">Imposta</button>
+    <div id="time">0</div>
+    <button id="startBtn">Start</button>
+    <button id="pauseBtn">Pausa</button>
+    <button id="resetBtn">Reset</button>
+    <div id="punti"></div>
+    <img id="logo" src="https://primary.jwwb.nl/public/v/x/m/temp-xablbuvasepspscffdwl/img_3963-high.jpg" alt="Logo Una Acies SAT">
+    <script>
+        let time = 0;
+        let initialTime = 0;
+        let timer = null;
+        let running = false;
+
+        const display = document.getElementById('time');
+        const input = document.getElementById('inputSeconds');
+        const punti = document.getElementById('punti');
+
+        document.getElementById('setBtn').onclick = function() {
+            let val = parseInt(input.value);
+            if (!isNaN(val) && val > 0) {
+                time = initialTime = val;
+                display.textContent = time;
+                punti.textContent = ""; // reset punti
+            } else {
+                alert("Inserisci un numero valido di secondi!");
+            }
+        }
+
+        document.getElementById('startBtn').onclick = function() {
+            if (!running && time > 0) {
+                running = true;
+                timer = setInterval(() => {
+                    if (time > 0) {
+                        time--;
+                        display.textContent = time;
+                    } else {
+                        clearInterval(timer);
+                        running = false;
+                        alert("Tempo scaduto!");
+                    }
+                }, 1000);
+            }
+        }
+
+        document.getElementById('pauseBtn').onclick = function() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            running = false;
+            punti.textContent = time + " punti"; // mostra i secondi rimanenti
+        }
+
+        document.getElementById('resetBtn').onclick = function() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            running = false;
+            time = initialTime;
+            display.textContent = time;
+            punti.textContent = ""; // reset punti
+        }
+    </script>
+</body>
+</html>
